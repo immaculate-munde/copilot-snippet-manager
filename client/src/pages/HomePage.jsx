@@ -4,6 +4,10 @@ import { SnippetCardWithActions } from '../components/SnippetCard'
 import SnippetForm from '../components/SnippetForm'
 import SearchBar from '../components/SearchBar'
 import CollectionSelector from '../components/CollectionSelector'
+import Toast from '../components/Toast'
+import KeyboardHelp from '../components/KeyboardHelp'
+import { useToast } from '../hooks/useToast'
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import '../styles/HomePage.css'
 
 function HomePage() {
@@ -12,10 +16,17 @@ function HomePage() {
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSnippetId, setSelectedSnippetId] = useState(null)
+  const { toast, showToast, hideToast } = useToast()
 
   useEffect(() => {
     loadSnippets()
   }, [])
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    { key: 'n', callback: () => setShowForm(true) },
+    { key: 'Escape', callback: () => setShowForm(false) },
+  ])
 
   const loadSnippets = async () => {
     try {
@@ -24,6 +35,7 @@ function HomePage() {
       setSnippets(data)
     } catch (error) {
       console.error('Error loading snippets:', error)
+      showToast('Failed to load snippets', 'error')
     } finally {
       setLoading(false)
     }
@@ -34,9 +46,10 @@ function HomePage() {
       await api.createSnippet(snippetData)
       setShowForm(false)
       loadSnippets()
+      showToast('Snippet created successfully!')
     } catch (error) {
       console.error('Error creating snippet:', error)
-      alert('Failed to create snippet')
+      showToast('Failed to create snippet', 'error')
     }
   }
 
@@ -48,9 +61,10 @@ function HomePage() {
     try {
       await api.deleteSnippet(id)
       loadSnippets()
+      showToast('Snippet deleted successfully!')
     } catch (error) {
       console.error('Error deleting snippet:', error)
-      alert('Failed to delete snippet')
+      showToast('Failed to delete snippet', 'error')
     }
   }
 
@@ -68,6 +82,7 @@ function HomePage() {
       setSnippets(results)
     } catch (error) {
       console.error('Error searching snippets:', error)
+      showToast('Search failed', 'error')
     } finally {
       setLoading(false)
     }
@@ -142,6 +157,16 @@ function HomePage() {
           onClose={() => setSelectedSnippetId(null)}
         />
       )}
+
+      {toast && (
+        <Toast 
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
+
+      <KeyboardHelp />
     </div>
   )
 }
