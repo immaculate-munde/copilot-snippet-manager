@@ -79,12 +79,27 @@ export const api = {
 
   // AI Features
   explainSnippet: async (id) => {
-    const response = await axiosInstance.post(`/snippets/${id}/explain`)
+    const response = await axiosInstance.post(`/snippets/${id}/ai/explain`)
+    return response.data
+  },
+
+  generateTags: async (code, language, title) => {
+    const response = await axiosInstance.post('/snippets/ai/generate-tags', { code, language, title })
     return response.data
   },
 
   semanticSearch: async (query) => {
-    const response = await axiosInstance.post('/snippets/semantic', { query })
+    const response = await axiosInstance.post('/snippets/ai/semantic-search', { query })
+    return response.data
+  },
+
+  suggestImprovements: async (id) => {
+    const response = await axiosInstance.post(`/snippets/${id}/ai/improve`)
+    return response.data
+  },
+
+  findSimilarSnippets: async (id) => {
+    const response = await axiosInstance.get(`/snippets/${id}/ai/similar`)
     return response.data
   },
 }

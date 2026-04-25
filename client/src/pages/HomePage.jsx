@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { api } from '../services/api'
-import SnippetCard from '../components/SnippetCard'
+import { SnippetCardWithActions } from '../components/SnippetCard'
 import SnippetForm from '../components/SnippetForm'
 import SearchBar from '../components/SearchBar'
+import CollectionSelector from '../components/CollectionSelector'
 import '../styles/HomePage.css'
 
 function HomePage() {
@@ -10,6 +11,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedSnippetId, setSelectedSnippetId] = useState(null)
 
   useEffect(() => {
     loadSnippets()
@@ -123,15 +125,23 @@ function HomePage() {
         ) : (
           <div className="snippets-grid">
             {snippets.map(snippet => (
-              <SnippetCard 
+              <SnippetCardWithActions 
                 key={snippet.id} 
                 snippet={snippet}
                 onDelete={handleDeleteSnippet}
+                onAddToCollection={(id) => setSelectedSnippetId(id)}
               />
             ))}
           </div>
         )}
       </div>
+
+      {selectedSnippetId && (
+        <CollectionSelector 
+          snippetId={selectedSnippetId}
+          onClose={() => setSelectedSnippetId(null)}
+        />
+      )}
     </div>
   )
 }
