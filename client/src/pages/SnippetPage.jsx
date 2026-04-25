@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { api } from '../services/api'
+import AIPanel from '../components/AIPanel'
 import Prism from 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import '../styles/SnippetPage.css'
@@ -107,6 +108,13 @@ function SnippetPage() {
             </code>
           </pre>
         </div>
+
+        <AIPanel 
+          snippetId={snippet.id}
+          code={snippet.code}
+          language={snippet.language}
+          title={snippet.title}
+        />
       </div>
     </div>
   )

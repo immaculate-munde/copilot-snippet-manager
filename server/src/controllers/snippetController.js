@@ -101,3 +101,98 @@ exports.searchSnippets = async (req, res) => {
     res.status(500).json({ error: 'Failed to search snippets' })
   }
 }
+
+const aiService = require('../services/aiService')
+
+exports.explainSnippet = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await pool.query('SELECT * FROM snippets WHERE id = $1', [id])
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Snippet not found' })
+    }
+    
+    const snippet = result.rows[0]
+    const explanation = await aiService.explainCode(snippet.code, snippet.language)
+    
+    res.json(explanation)
+  } catch (error) {
+    console.error('Error explaining snippet:', error)
+    res.status(500).json({ error: 'Failed to generate explanation' })
+  }
+}
+
+exports.generateTags = async (req, res) => {
+  try {
+    const { code, language, title } = req.body
+    const tags = await aiService.generateTags(code, language, title)
+    
+    res.json({ tags })
+  } catch (error) {
+    console.error('Error generating tags:', error)
+    res.status(500).json({ error: 'Failed to generate tags' })
+  }
+}
+
+exports.semanticSearch = async (req, res) => {
+  try {
+    const { query } = req.body
+    
+    // Get all snippets
+    const result = await pool.query('SELECT * FROM snippets')
+    const snippets = result.rows
+    
+    // Perform semantic search
+    const results = await aiService.semanticSearch(query, snippets)
+    
+    res.json(results)
+  } catch (error) {
+    console.error('Error in semantic search:', error)
+    res.status(500).json({ error: 'Failed to perform semantic search' })
+  }
+}
+
+exports.suggestImprovements = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await pool.query('SELECT * FROM snippets WHERE id = $1', [id])
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Snippet not found' })
+    }
+    
+    const snippet = result.rows[0]
+    const improvements = await aiService.suggestImprovements(snippet.code, snippet.language)
+    
+    res.json(improvements)
+  } catch (error) {
+    console.error('Error suggesting improvements:', error)
+    res.status(500).json({ error: 'Failed to suggest improvements' })
+  }
+}
+
+exports.findSimilarSnippets = async (req, res) => {
+  try {
+    const { id } = req.params
+    const targetResult = await pool.query('SELECT * FROM snippets WHERE id = $1', [id])
+    
+    if (targetResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Snippet not found' })
+    }
+    
+    const targetSnippet = targetResult.rows[0]
+    
+    // Get all other snippets
+    const allResult = await pool.query('SELECT * FROM snippets WHERE id != $1', [id])
+    const allSnippets = allResult.rows
+    
+    // Find similar snippets
+    const similar = await aiService.findSimilarSnippets(targetSnippet.code, allSnippets)
+    
+    res.json(similar)
+  } catch (error) {
+    console.error('Error finding similar snippets:', error)
+    res.status(500).json({ error: 'Failed to find similar snippets' })
+  }
+}

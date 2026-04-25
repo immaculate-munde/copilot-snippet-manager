@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
+import ThemeToggle from './components/ThemeToggle'
 import HomePage from './pages/HomePage'
 import SnippetPage from './pages/SnippetPage'
 import CollectionPage from './pages/CollectionPage'
@@ -9,6 +10,7 @@ function App() {
   return (
     <Router>
       <div className="app">
+        <ThemeToggle />
         <Sidebar />
         <div className="main-content">
           <Routes>
