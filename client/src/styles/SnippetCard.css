@@ -1,0 +1,111 @@
+.snippet-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.snippet-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.snippet-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.snippet-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.snippet-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.snippet-title:hover {
+  color: #3b82f6;
+}
+
+.snippet-language {
+  background: #3b82f6;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  padding: 0.25rem;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+.snippet-description {
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.snippet-code-preview {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.snippet-code-preview code {
+  color: #94a3b8;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.snippet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.snippet-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #334155;
+  color: #94a3b8;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.snippet-date {
+  color: #64748b;
+  font-size: 0.875rem;
+}
