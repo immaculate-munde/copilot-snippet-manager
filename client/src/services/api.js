@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
 })
 
 export const api = {
+  // Snippets
   getSnippets: async () => {
     const response = await axiosInstance.get('/snippets')
     return response.data
@@ -40,6 +41,43 @@ export const api = {
     return response.data
   },
 
+  // Collections
+  getCollections: async () => {
+    const response = await axiosInstance.get('/collections')
+    return response.data
+  },
+
+  getCollection: async (id) => {
+    const response = await axiosInstance.get(`/collections/${id}`)
+    return response.data
+  },
+
+  createCollection: async (collection) => {
+    const response = await axiosInstance.post('/collections', collection)
+    return response.data
+  },
+
+  updateCollection: async (id, collection) => {
+    const response = await axiosInstance.put(`/collections/${id}`, collection)
+    return response.data
+  },
+
+  deleteCollection: async (id) => {
+    const response = await axiosInstance.delete(`/collections/${id}`)
+    return response.data
+  },
+
+  addSnippetToCollection: async (collectionId, snippetId) => {
+    const response = await axiosInstance.post(`/collections/${collectionId}/snippets/${snippetId}`)
+    return response.data
+  },
+
+  removeSnippetFromCollection: async (collectionId, snippetId) => {
+    const response = await axiosInstance.delete(`/collections/${collectionId}/snippets/${snippetId}`)
+    return response.data
+  },
+
+  // AI Features
   explainSnippet: async (id) => {
     const response = await axiosInstance.post(`/snippets/${id}/explain`)
     return response.data
